@@ -16,32 +16,21 @@ export class App extends Component {
     }
   };
 
-  //   try{
-  //   event.preventDefault();
-  //   const city = event.target.cityName.value;
-  //   const serverResponse = await axios.get(`https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_CITY_KEY}&q=${city}&format=json`)
-
-  //   this.setState ({
-  //     locationData: serverResponse.data[0]
-
-  //   });
-  //   console.log(serverResponse.data[0]);
-  // }
   cityEntered = async (event) => {
     event.preventDefault();
     try {
 
-      const city = e.target.cityName.value;
+      const city = event.target.cityName.value;
       const serverResponse = await axios.get(`https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_CITY_KEY}&q=${city}&format=json`);
       this.setState({
-        locationData: response.data[0],
+        locationData: serverResponse.data[0],
         errorMsg: '',
       });
     } catch (error) {
       this.setState({
         errorMsg: error.message,
       });
-      // console.log(error.message)
+      
     }
   };
 
