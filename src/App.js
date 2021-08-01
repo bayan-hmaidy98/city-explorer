@@ -30,25 +30,25 @@ export class App extends Component {
   
   render() {
     return (
-      <div>
+      <div id = "container">
         <Form onSubmit = {this.cityEntered}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>City Name</Form.Label>
-            <Form.Control type="text" placeholder="Enter city name" name="cityName" />
+            <Form.Label style ={{padding: '20px 15px'}} >City Name</Form.Label>
+            <Form.Control type="text" placeholder="Enter city name" name="cityName" style = {{ width: '50%' }} />
           </Form.Group>
 
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" style = {{background : '#BEE5EC'}}>
             Explore!
           </Button>
-        </Form>
+        </Form> <br />
         <div>
-        <img src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_KEY}&q&center=${this.state.locationData.lat},${this.state.locationData.lon}&zoom=15`} />
+        <img style = {{border: '5px solid #555'}} src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_KEY}&q&center=${this.state.locationData.lat},${this.state.locationData.lon}&zoom=15`} />
         {
           this.state.locationData.display_name && (
           <p>
-          <p>{this.state.locationData.display_name}</p>
-          <p>{this.state.locationData.lon}</p>
-          <p>{this.state.locationData.lat}</p>
+          <p>City: {this.state.locationData.display_name}</p>
+          <p>Longitude: {this.state.locationData.lon}</p>
+          <p>Latitude: {this.state.locationData.lat}</p>
           </p>
     ) }
         </div>
