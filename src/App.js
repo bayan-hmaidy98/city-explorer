@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import Weather from './component/weather';
 
 
 export class App extends Component {
@@ -11,17 +12,26 @@ export class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      locationData: {}
-
+      locationData: {},
+      errorMsg: '',
+      displayMap: false,
+      renderedLocWeatherData: [],
+      showWeather: false,
+      weatherErr: '',
+      dspErrWeather: false,
+      displarErrorMsg: false,
     }
   };
 
   cityEntered = async (event) => {
     event.preventDefault();
-    try {
+   
 
       const city = event.target.cityName.value;
       const serverResponse = await axios.get(`https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_CITY_KEY}&q=${city}&format=json`);
+      let weatherData = `${process.env.REACT_APP_URL}/weather?searchQuery=${city}`;
+      try {
+        let locResult = await axios.get(serverResponse);
       this.setState({
         locationData: serverResponse.data[0],
         errorMsg: '',
@@ -29,8 +39,29 @@ export class App extends Component {
     } catch (error) {
       this.setState({
         errorMsg: error.message,
+        displarErrorMsg: 'sorry , Error in response !!',
+        errorMsg: true,
       });
       
+    }
+    try {
+      let locWeatherData = await axios.get(weatherData);
+      if (locWeatherData.data !== undefined) {
+        this.setState({
+          renderedLocWeatherData: locWeatherData.data,
+          showWeather: true,
+          dspErrWeather: false,
+        })
+      }
+    }
+    catch {
+      this.setState({
+        weatherErr: 'sorry , no weather data availabe for your location',
+        showWeather: false,
+        dspErrWeather: true
+
+      })
+
     }
   };
 
@@ -59,6 +90,24 @@ export class App extends Component {
               </p>
             )}
         </div>
+        {this.state.displarErrorMsg && <p>{this.state.errorMsg}</p>}
+        {this.state.showWeather &&
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>date</th>
+                <th>description</th>
+              </tr>
+            </thead>
+            {this.state.renderedLocWeatherData.map((element) => {
+              return (<Weather
+                description={element.description}
+                date={element.date}
+              />
+              )
+            })}
+          </Table>
+        }
       </div>
     )
   }
