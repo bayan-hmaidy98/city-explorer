@@ -16,23 +16,26 @@ export class App extends Component {
       locationData: {},
       errorMsg: '',
       displayMap: false,
-      displayWeather: false
+      displayWeather: false,
+      weatherData: []
     }
   };
 
   cityEntered = async (event) => {
     event.preventDefault();
-
+console.log('Hello');
     try {
       const city = event.target.cityName.value;
       const serverResponse = await axios.get(`https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_CITY_KEY}&q=${city}&format=json`);
       const locData = serverResponse.data[0];
       const cityModified = serverResponse.data[0].display_name.split(',')[0];
       let weatherData = await axios.get(`${process.env.REACT_APP_URL}/weather?searchQuery=${cityModified}&lon=${locData.lon}&${locData.lat}`);
-      // let locResult = await axios.get(serverResponse);
+
+      console.log(weatherData);
       this.setState({
         locationData: locData,
         errorMsg: '',
+
         weatherData: weatherData.data,
         displayMap: true
       });
@@ -77,7 +80,7 @@ export class App extends Component {
         <div>
           <Weather
             weatherData={this.state.weatherData}
-            displayWeather={this.state.displayWeather}
+            // displayWeather={this.state.displayWeather}
           />
         </div>
       </div>

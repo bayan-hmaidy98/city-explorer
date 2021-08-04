@@ -8,9 +8,10 @@ class Weather extends React.Component {
 
 
     render() {
+        console.log(this.props)
         return (
            <div>
-            {this.props.showWeather &&
+            {this.props.weatherData[0] &&
            <ul>
                 <li>
                     {this.props.weatherData[0].valid_date} <br />
