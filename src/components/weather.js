@@ -1,19 +1,36 @@
-import React, { Component } from 'react'
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-export class weather extends Component {
+
+
+class Weather extends React.Component {
+
+
+
     render() {
         return (
+           <div>
+            {this.props.showWeather &&
+           <ul>
+                <li>
+                    {this.props.weatherData[0].valid_date} <br />
+                    {this.props.weatherData[0].description}
+                </li>
 
-            <tbody>
-                <tr>
-                    <td>{this.props.date}</td>
-                    <td>{this.props.description} </td>
-                </tr>
-            </tbody>
-
-
+                <li>
+                    {this.props.weatherData[1].valid_date} <br />
+                    {this.props.weatherData[1].description}
+                </li>
+                <li>
+                    {this.props.weatherData[2].valid_date} <br />
+                    {this.props.weatherData[2].description}
+                </li>
+            </ul>
+            }
+            </div>
         )
     }
 }
 
-export default weather
+
+export default Weather;
