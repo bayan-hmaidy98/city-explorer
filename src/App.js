@@ -6,7 +6,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import Weather from './components/weather';
-
+import Movies from './components/BestMovies';
 
 export class App extends Component {
 
@@ -17,7 +17,8 @@ export class App extends Component {
       errorMsg: '',
       displayMap: false,
       displayWeather: false,
-      weatherData: []
+      weatherData: [],
+      moviesData: []
     }
   };
 
@@ -30,12 +31,12 @@ console.log('Hello');
       const locData = serverResponse.data[0];
       const cityModified = serverResponse.data[0].display_name.split(',')[0];
       let weatherData = await axios.get(`${process.env.REACT_APP_URL}/weather?searchQuery=${cityModified}&lon=${locData.lon}&${locData.lat}`);
-
+      let moviesData = await axios.get(`${process.env.MOVIESDB_URL}/movie?api_key=${process.env.MOVIESDB_KEY}&query=${cityModified}&page=1`)
       console.log(weatherData);
       this.setState({
         locationData: locData,
         errorMsg: '',
-
+        moviesData: moviesData.data,
         weatherData: weatherData.data,
         displayMap: true
       });
@@ -82,10 +83,13 @@ console.log('Hello');
             weatherData={this.state.weatherData}
             // displayWeather={this.state.displayWeather}
           />
+          <Movies 
+            moviesData = {this.state.moviesData}
+          />
         </div>
       </div>
     )
   }
 }
 
-export default App
+export default App;
